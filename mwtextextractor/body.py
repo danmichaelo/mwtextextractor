@@ -94,8 +94,11 @@ def get_body_text(text):
 
     out = re.sub(r'==[=]*', '', out)                                 # drop header markers (but keep header text)
     out = re.sub(r"''[']*", '', out)                                 # drop bold/italic markers (but keep text)
-    out = re.sub(r'^#.*?$', '', out, flags=re.MULTILINE)             # drop lists altogether
-    out = re.sub(r'^\*.*?$', '', out, flags=re.MULTILINE)            # drop lists altogether
+
+    # Note that re.sub has no flags support in python2.6, which is why we use re.compile
+    rec1 = re.compile(r'^(?:#|\*).*?$', flags=re.MULTILINE)          # drop lists altogether
+    out = rec1.sub('', out)
+
     out = re.sub(r'\[\[Kategori:[^\]]+\]\]', '', out)                # drop categories
     out = re.sub(r'(?<!\[)\[(?!\[)[^ ]+ [^\]]+\]', '', out)          # drop external links
     out = re.sub(r'\[\[(?:[^:|\]]+\|)?([^:\]]+)\]\]', '\\1', out)    # wikilinks as text, '[[Artikkel 1|artikkelen]]' -> 'artikkelen'
