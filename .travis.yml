@@ -14,7 +14,7 @@ before_script:
   - pip install --use-mirrors pytest pytest-pep8 pytest-cov coveralls
 
 script: 
-  - py.test --pep8 mwtemplates -v --cov mwtemplates --doctest-modules -x tests
+  - py.test --pep8 mwtextextractor-v --cov mwtextextractor --doctest-modules tests.py
 
 after_success:
   - coveralls
