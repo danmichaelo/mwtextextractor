@@ -1,0 +1,20 @@
+# http://about.travis-ci.org/docs/user/languages/python/
+
+language: python
+python:
+  - "2.6"
+  - "2.7"
+  - "3.2"
+  - "3.3"
+
+install: 
+  - pip install git+git://github.com/danmichaelo/mwtemplates.git
+
+before_script:
+  - pip install --use-mirrors pytest pytest-pep8 pytest-cov coveralls
+
+script: 
+  - py.test --pep8 mwtemplates -v --cov mwtemplates --doctest-modules -x tests
+
+after_success:
+  - coveralls
