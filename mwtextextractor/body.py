@@ -17,28 +17,26 @@ from lxml.html import fromstring
 from mwtemplates import preprocessToXml
 
 
-def condition_for_soup(text):
-    """
-    While BeautifulSoup and its parsers are robust, (unknown) tags with
-    unquoted arguments seems to be an issue.
+def condition_for_lxml(text):
+    r"""
+    lxml does not not tackle short tags with unquoted arguments very well.
+    As an example, this is a piece of wikitext which is often encountered:
 
-    Let's first define a function to make things clearer:
-    >>> def f(str):
-    >>>     out = ''
-    >>>     for tag in BeautifulSoup(str, 'lxml').findAll('body')[0].contents]):
-    >>>         out.append(unicode(tag))
-    >>>     return ''.join(out)
+    >>> txt = '<root><ref name=XYZ/>Some text</root>'
 
-    Now, here is an unexpected result: the ref-tag is not read as closed and
-    continue to eat the remaining text!
-    >>> f('<ref name=XYZ/>Mer tekst her')
-    <<< u'<ref name="XYZ/">Mer tekst her</ref>'
+    Let's see how lxml parses it:
 
-    Add a space before / and we get the expected result:
-    >>> f('<ref name=XYZ />Mer tekst her')
-    <<< u'<ref name="XYZ"></ref>Mer tekst her'
+    >>> from lxml.html import fromstring
+    >>> from lxml.etree import tostring
+    >>> tostring(fromstring(txt))
+    '<root><ref name="XYZ/">Some text</ref></root>'
 
-    Therefore we should condition the text before sending it to BS
+    Not quite as expected. Add a space before the slash, and we get the expected result:
+    >>> txt = '<root><ref name=XYZ />Some text</root>'
+    >>> tostring(fromstring(txt))
+    '<root><ref name="XYZ"/>Some text</root>'
+
+    Therefore we should condition the text before sending it to lxml
     """
     text = re.sub(r'<ref ([^>]+)=\s?([^"\s]+)/>', r'<ref \1=\2 />', text)
 
@@ -53,7 +51,7 @@ def get_body_text(text):
     xml = preprocessToXml(text)
     xml = xml.replace('&lt;', '<').replace('&gt;', '>')
 
-    root = fromstring(condition_for_soup(xml))
+    root = fromstring(condition_for_lxml(xml))
 
     out = u''
     if root.text:
