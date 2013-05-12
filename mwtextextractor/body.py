@@ -54,7 +54,7 @@ def get_body_text(text):
 
     root = fromstring(condition_for_lxml(xml))
 
-    out = u''
+    out = ''
     if root.text:
         out += root.text
     for child in root.iterchildren():
