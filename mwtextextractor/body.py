@@ -28,13 +28,13 @@ def condition_for_lxml(text):
 
     >>> from __future__ import print_function
     >>> from lxml.html import fromstring
-    >>> from lxml.etree import tostring
-    >>> print(tostring(fromstring(txt)))
+    >>> from lxml.etree import tounicode
+    >>> print(tounicode(fromstring(txt)))
     <root><ref name="XYZ/">Some text</ref></root>
 
     Not quite as expected. Add a space before the slash, and we get the expected result:
     >>> txt = '<root><ref name=XYZ />Some text</root>'
-    >>> print(tostring(fromstring(txt)))
+    >>> print(tounicode(fromstring(txt)))
     <root><ref name="XYZ"/>Some text</root>
 
     Therefore we should condition the text before sending it to lxml
