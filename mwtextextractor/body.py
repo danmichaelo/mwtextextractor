@@ -26,15 +26,16 @@ def condition_for_lxml(text):
 
     Let's see how lxml parses it:
 
+    >>> from __future__ import print_function
     >>> from lxml.html import fromstring
     >>> from lxml.etree import tostring
-    >>> tostring(fromstring(txt))
-    '<root><ref name="XYZ/">Some text</ref></root>'
+    >>> print(tostring(fromstring(txt)))
+    <root><ref name="XYZ/">Some text</ref></root>
 
     Not quite as expected. Add a space before the slash, and we get the expected result:
     >>> txt = '<root><ref name=XYZ />Some text</root>'
-    >>> tostring(fromstring(txt))
-    '<root><ref name="XYZ"/>Some text</root>'
+    >>> print(tostring(fromstring(txt)))
+    <root><ref name="XYZ"/>Some text</root>
 
     Therefore we should condition the text before sending it to lxml
     """
