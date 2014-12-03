@@ -13,6 +13,7 @@ import re
 import logging
 logger = logging.getLogger(__name__)
 
+import string
 from lxml.html import fromstring
 from mwtemplates import preprocessToXml
 
@@ -110,5 +111,6 @@ def get_body_text(text):
     out = re.sub(r'\[\[(?:Fil|File|Image|Bilde):[^\]]+\|([^\]]+)\]\]', '\\1', out)  # image descriptions only
     out = re.sub(r'\[\[[A-Za-z\-]+:[^\]]+\]\]', '', out)             # drop interwikis
 
-    out = out.strip()
+    exclude = set(string.punctuation)
+    out = ' '.join(ch for ch in out.split() if ch not in exclude)
     return out
