@@ -41,6 +41,10 @@ def condition_for_lxml(text):
     """
     text = re.sub(r'<ref ([^>]+)=\s?([^"\s]+)/>', r'<ref \1=\2 />', text)
 
+    def evaluate(match):
+        return '<math>%s</math>' % match.group(1).replace('<', '&lt;')
+    text = re.sub(r'<math>(.*?)</math>', evaluate, text)
+
     # strip whitespace at beginning of lines, as it makes finding tables harder
     text = re.sub(r'\n[\s]+', r'\n', text)
 
