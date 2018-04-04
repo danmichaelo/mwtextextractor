@@ -12,8 +12,8 @@ class TestMWTextExtractor(unittest.TestCase):
     def test_simple_template(self):
         # Check that a simple template is stripped
         text = 'Alfa {{beta}} gamma'
-        te = get_body_text(text).split()
-        self.assertEqual(len(te), 2)  # only two words should remain
+        te = get_body_text(text)
+        self.assertEqual(te, 'Alfa gamma')  # only two words should remain
 
     def test_recursive_tables(self):
         # Check that recursive tables are stripped correctly
@@ -24,8 +24,14 @@ class TestMWTextExtractor(unittest.TestCase):
     def test_math(self):
         # Check that a simple template is stripped
         text = 'on alkuperäinen suure ja <math>1/2 \le r<1 < 2<3</math>. Eudoksoksen oppilas'
-        te = get_body_text(text).split()
-        self.assertEqual(len(te), 6)
+        te = get_body_text(text)
+        self.assertEqual(te, 'on alkuperäinen suure ja Eudoksoksen oppilas')
+
+    def test_cmp(self):
+        # Check that a simple template is stripped
+        text = 'It\'s < 20 %, but <ref>not small</ref> really'
+        te = get_body_text(text)
+        self.assertEqual(te, 'It\'s 20 %, but really')
 
 
 if __name__ == '__main__':

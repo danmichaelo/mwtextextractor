@@ -46,6 +46,11 @@ def condition_for_lxml(text):
         return '<math>%s</math>' % match.group(1).replace('<', '&lt;')
     text = re.sub(r'<math>(.*?)</math>', evaluate, text)
 
+    # ... but <'s are also sometimes used outside math tags. Since they
+    # are often followed by a space or a number, escaping anyone not
+    # followed by a letter should help a bit.
+    text = re.sub(r'<(?![a-zA-Z/])', '&lt;', text)
+
     # strip whitespace at beginning of lines, as it makes finding tables harder
     text = re.sub(r'\n[\s]+', r'\n', text)
 
