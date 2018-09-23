@@ -4,7 +4,7 @@
 from setuptools import setup
 
 setup(name='mwtextextractor',
-      version='0.1.2',
+      version='0.1.3',
       description='Extracts body text from MediaWiki wikitext by stripping off templates, html tags, tables, headers, etc.',
       long_description=(
           open('README.rst').read()
