@@ -15,6 +15,12 @@ class TestMWTextExtractor(unittest.TestCase):
         te = get_body_text(text)
         self.assertEqual(te, 'Alfa gamma')  # only two words should remain
 
+    def test_allow_extra_closing_table_tag(self):
+        # Check that an extra |} doesn't mess up everything
+        text = 'Alfa\n|}\ngamma'
+        te = get_body_text(text)
+        self.assertEqual(te, 'Alfa gamma')  # Two words should remain
+
     def test_recursive_tables(self):
         # Check that recursive tables are stripped correctly
         text = 'Alfa {| \n|beta \n{| \n|gamma \n|} \n|} delta'

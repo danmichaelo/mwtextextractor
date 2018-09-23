@@ -96,8 +96,12 @@ def get_body_text(text):
             cpos = current['pos'] + 2
             depth += 1
         else:
+            if depth == 0:
+                buf.append(out[cpos:current['pos']])
+                logger.warning('Found |}, but no table was open.')
+            else:
+                depth -= 1
             cpos = current['pos'] + 2
-            depth -= 1
 
     if depth == 0:
         buf.append(out[cpos:])
