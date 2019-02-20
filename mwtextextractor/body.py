@@ -10,12 +10,12 @@ by stripping off templates, html tags, tables, headers, etc.
 
 from __future__ import unicode_literals
 import re
-import logging
-logger = logging.getLogger(__name__)
-
 import string
+import logging
 from lxml.html import fromstring
 from mwtemplates import preprocessToXml
+
+logger = logging.getLogger(__name__)
 
 
 def condition_for_lxml(text):
